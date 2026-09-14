@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Profile for students, teachers, DOS, and Headteachers.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full Name" },
+        "email": { "type": "string", "description": "Email Address" },
+        "role": { "type": "string", "enum": ["student", "teacher", "dos", "hm"], "description": "Institutional Role" },
+        "unebId": { "type": "string", "description": "UNEB ID (e.g., U3206/S/023)" },
+        "schoolCode": { "type": "string", "description": "School Center Number" },
+        "status": { "type": "string", "enum": ["pending", "approved"], "description": "Approval Status" },
+        "passcode": { "type": "string", "description": "6-digit secure passcode" },
+        "momoNumber": { "type": "string", "description": "MTN/Airtel MoMo Number" },
+        "subjectExpertise": { "type": "array", "items": { "type": "string" }, "description": "Subjects taught (for teachers)" },
+        "class": { "type": "string", "description": "Current Class (S.1-S.6 for students)" }
+      },
+      "required": ["uid", "name", "role", "schoolCode", "status"]
+    },
+    "ActivityOfIntegration": {
+      "title": "Activity of Integration (AoI)",
+      "description": "NCDC CBC Competency-Based Activity.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "class": { "type": "string" },
+        "description": { "type": "string" },
+        "areaK": { "type": "string", "description": "Competency Area K" }
+      },
+      "required": ["title", "subject", "class", "areaK"]
+    },
+    "Submission": {
+      "title": "Student Submission",
+      "description": "A student's work for an AoI.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "aoiId": { "type": "string" },
+        "content": { "type": "string", "description": "Text or Image URL" },
+        "grade": { "type": "string", "enum": ["L1", "L2", "L3"], "description": "NCDC Level" },
+        "feedback": { "type": "string" },
+        "dnaVerified": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "aoiId", "content", "timestamp"]
+    },
+    "HandwritingDNA": {
+      "title": "Handwriting DNA",
+      "description": "Biometric vector data for academic integrity.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "vectorData": { "type": "string", "description": "JSON string of stroke vectors" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "vectorData"]
+    },
+    "Message": {
+      "title": "System Message",
+      "description": "Hierarchical communication.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string", "description": "Can be 'all' for broadcasts" },
+        "content": { "type": "string" },
+        "type": { "type": "string", "enum": ["broadcast", "direct", "suggestion"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "content", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/activities": { "schema": "ActivityOfIntegration", "description": "Curriculum activities" },
+    "/submissions": { "schema": "Submission", "description": "Student work" },
+    "/dna/{userId}": { "schema": "HandwritingDNA", "description": "Handwriting biometric data" },
+    "/messages": { "schema": "Message", "description": "Communication logs" }
+  }
+}

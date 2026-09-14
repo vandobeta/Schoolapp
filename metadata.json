@@ -1,0 +1,11 @@
+{
+  "name": "Remix: Ugandan Smart School Plugin (GEDE)",
+  "description": "AI-powered digital backbone for Ugandan schools, harmonizing AI innovation with the 2026 NCDC Competency-Based Curriculum.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
